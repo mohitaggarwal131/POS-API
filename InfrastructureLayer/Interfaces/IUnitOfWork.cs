@@ -11,6 +11,10 @@ namespace InfrastructureLayer.Interfaces
 
         ISaleRepository SaleRepository { get; }
 
+        IUserRepository UserRepository { get; }
+
+        ICategoryRepository CategoryRepository { get; }
+
         public void Commit();
     }
 }

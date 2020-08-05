@@ -11,6 +11,8 @@ namespace InfrastructureLayer.Implementations
         private readonly POSContext _context;
         private IProductRepository _productRepository;
         private ISaleRepository _saleRepository;
+        private IUserRepository _userRepository;
+        private ICategoryRepository _categoryRepository;
 
 
         public UnitOfWork(POSContext context)
@@ -32,6 +34,22 @@ namespace InfrastructureLayer.Implementations
             get
             {
                 return _saleRepository ??= new SaleRepository(_context);
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                return _userRepository ??= new UserRepository(_context);
+            }
+        }
+
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                return _categoryRepository ??= new CategoryRepository(_context);
             }
         }
 
