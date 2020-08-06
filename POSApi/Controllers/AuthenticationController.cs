@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessLayer.Interface;
+﻿using BusinessLayer.Interface;
 using DataTransferObject;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +32,7 @@ namespace POSApi.Controllers
         {
             _authenticationService = authenticationService;
             _userService = userService;
-            _secretKey = config[Constants.SecretKey];
+            _secretKey = config[Constants.SecurityKey];
             _logger = logger;
         }
 
@@ -46,9 +42,8 @@ namespace POSApi.Controllers
         /// Create and return JWT token for a user
         /// </summary>
         /// <param name="userDetails">Username and password</param>
-        /// <returns>JWT</returns>
+        /// <returns>JWT Token and user details</returns>
         [HttpPost]
-        [Route("authentication-token")]
         public IActionResult GetAuthenticationToken(UserDto userDetails)
         {
             try

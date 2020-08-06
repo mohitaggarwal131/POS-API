@@ -1,10 +1,11 @@
 ﻿using BusinessLayer.Interface;
 using DataTransferObject;
 using Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Utility;
@@ -13,34 +14,47 @@ namespace BusinessLayer.Implementations
 {
     public class AuthenticationService : IAuthenticationService
     {
+        #region Private Fields
+
+        private readonly IConfiguration _configuration;
+
+        #endregion
+
+        /// <summary>
+        /// Constructor to inject configuration in the authentication service
+        /// </summary>
+        /// <param name="configuration">instance of configuration</param>
+        public AuthenticationService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+
         /// <summary>
         /// Generate a JWT Token for given user details.
         /// </summary>
-        /// <param name="user">user dto</param>
+        /// <param name="user">user</param>
         /// <param name="secretKey">secret key</param>
-        /// <returns>JWT token</returns>
+        /// <returns>AuthenticationDto</returns>
         public AuthenticationDto GenerateToken(User user, string secretKey)
         {
             List<Claim> claims = new List<Claim>()
             {
-                 new Claim(ClaimTypes.Sid,user.Id.ToString())
+                 new Claim(ClaimTypes.Name,user.FirstName)
             };
 
             foreach (var roles in user.UserRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, roles.Role.Name));
+               claims.Add(new Claim(ClaimTypes.Role, roles.Role.Name));
             }
 
-            var securityKey = new SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(secretKey));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-            var token = new JwtSecurityToken
-            (
-               issuer: Constants.NoIssuerAudience,
-               audience: Constants.NoIssuerAudience,
-               claims: claims,
-               expires: DateTime.Now.AddHours(Constants.JwsExpireTime),
-               signingCredentials: signingCredentials
-            );
+            var token = new JwtSecurityToken(_configuration[Constants.IssuerKey],
+                _configuration[Constants.IssuerKey],
+                claims,
+                expires: DateTime.Now.AddHours(Constants.JwsExpireTime),
+                signingCredentials: signingCredentials);
 
             var authentication = new AuthenticationDto()
             {
@@ -51,6 +65,5 @@ namespace BusinessLayer.Implementations
             };
             return authentication;
         }
-
     }
 }

@@ -3,10 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InfrastructureLayer.Migrations
 {
-    public partial class InitialSeedData : Migration
+    public partial class DatabaseUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_SaleProducts_Products_ProductId",
+                table: "SaleProducts");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_SaleProducts_Sales_SaleId",
+                table: "SaleProducts");
+
+            migrationBuilder.DropIndex(
+                name: "IX_SaleProducts_ProductId",
+                table: "SaleProducts");
+
+            migrationBuilder.DropIndex(
+                name: "IX_SaleProducts_SaleId",
+                table: "SaleProducts");
+
+            migrationBuilder.DropColumn(
+                name: "SaleId",
+                table: "SaleProducts");
+
             migrationBuilder.UpdateData(
                 table: "Categories",
                 keyColumn: "Id",
@@ -73,6 +93,12 @@ namespace InfrastructureLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "SaleId",
+                table: "SaleProducts",
+                type: "int",
+                nullable: true);
+
             migrationBuilder.UpdateData(
                 table: "Categories",
                 keyColumn: "Id",
@@ -135,6 +161,32 @@ namespace InfrastructureLayer.Migrations
                 keyValue: 2,
                 column: "GuId",
                 value: new Guid("37c5c837-7512-4e4f-a7b6-93db19e6158c"));
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleProducts_ProductId",
+                table: "SaleProducts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleProducts_SaleId",
+                table: "SaleProducts",
+                column: "SaleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_SaleProducts_Products_ProductId",
+                table: "SaleProducts",
+                column: "ProductId",
+                principalTable: "Products",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_SaleProducts_Sales_SaleId",
+                table: "SaleProducts",
+                column: "SaleId",
+                principalTable: "Sales",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

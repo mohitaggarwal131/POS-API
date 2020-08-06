@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfrastructureLayer.Migrations
 {
     [DbContext(typeof(POSContext))]
-    [Migration("20200805065638_InitialData")]
-    partial class InitialData
+    [Migration("20200806134644_DatabaseUpdate")]
+    partial class DatabaseUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,21 +173,21 @@ namespace InfrastructureLayer.Migrations
 
             modelBuilder.Entity("Entities.SaleProduct", b =>
                 {
-                    b.Property<int>("SaleId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("SaleId", "ProductId");
-
-                    b.HasIndex("ProductId");
+                    b.HasKey("Id");
 
                     b.ToTable("SaleProducts");
                 });
@@ -270,7 +270,7 @@ namespace InfrastructureLayer.Migrations
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.HasOne("Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -281,21 +281,6 @@ namespace InfrastructureLayer.Migrations
                     b.HasOne("Entities.User", "User")
                         .WithMany("Sales")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.SaleProduct", b =>
-                {
-                    b.HasOne("Entities.Product", "Product")
-                        .WithMany("SaleProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Sale", "Sale")
-                        .WithMany("SaleProducts")
-                        .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

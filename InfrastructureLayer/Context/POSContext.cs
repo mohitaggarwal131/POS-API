@@ -1,8 +1,5 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace InfrastructureLayer.Context.Extensions
 {
@@ -30,8 +27,7 @@ namespace InfrastructureLayer.Context.Extensions
             modelBuilder.Entity<User>().
                          HasKey(sc => sc.Id);
             modelBuilder.Entity<SaleProduct>().
-                         HasKey(sc => new
-                         { sc.SaleId, sc.ProductId });
+                         HasKey(sc => sc.Id);
             modelBuilder.Entity<UserRole>().
                          HasKey(sc => new
                          { sc.UserId, sc.RoleId });

@@ -1,27 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLayer.Implementations;
+using BusinessLayer.Interface;
 using InfrastructureLayer.Context.Extensions;
+using InfrastructureLayer.Implementations;
+using InfrastructureLayer.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Utility;
-using POSApi.GlobalErrorHandling;
-using POSApi.Filters;
-using AutoMapper;
-using Utility.AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using POSApi.Filters;
+using POSApi.GlobalErrorHandling;
+using System.Collections.Generic;
 using System.Text;
-using InfrastructureLayer.Interfaces;
-using InfrastructureLayer.Implementations;
-using BusinessLayer.Interface;
-using BusinessLayer.Implementations;
+using Utility;
+using Utility.AutoMapper;
 
 namespace POSApi
 {
@@ -93,6 +91,8 @@ namespace POSApi
             #region Register Dependency
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IAuthenticationService,AuthenticationService >();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ValidationFilterAttribute>();
@@ -103,31 +103,23 @@ namespace POSApi
 
             var key = Configuration[Constants.SecretKey];
 
-            services.AddAuthentication(x =>
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                    x.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = context =>
-                        {
-                            var accessToken = context.Request.Query[Constants.AccessTokenKey];
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                 ValidateIssuer = true,
+                 ValidateAudience = false,
+                 ValidateLifetime = true,
+                 ValidateIssuerSigningKey = true,
+                 ValidIssuer = Configuration[Constants.IssuerKey],
+                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration[Constants.SecurityKey]))
+               };
+            });
 
             #endregion
         }
@@ -157,7 +149,6 @@ namespace POSApi
             app.UseAuthorization();
             
             app.UseAuthentication();
-
             app.UseHttpsRedirection();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

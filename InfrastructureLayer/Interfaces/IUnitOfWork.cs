@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace InfrastructureLayer.Interfaces
+﻿namespace InfrastructureLayer.Interfaces
 {
     public interface IUnitOfWork
     {
@@ -14,6 +10,8 @@ namespace InfrastructureLayer.Interfaces
         IUserRepository UserRepository { get; }
 
         ICategoryRepository CategoryRepository { get; }
+
+        ISaleProductRepository SaleProductRepository { get; }
 
         public void Commit();
     }

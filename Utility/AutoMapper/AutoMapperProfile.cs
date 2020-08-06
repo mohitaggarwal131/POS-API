@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using DataTransferObject;
+using Entities;
 
 namespace Utility.AutoMapper
 {
@@ -9,6 +8,7 @@ namespace Utility.AutoMapper
     {
         public AutoMapperProfile()
         {
+            CreateMap<Product, ProductDto>();
         }
     }
 }

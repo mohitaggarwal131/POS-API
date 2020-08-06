@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Entities
 {
@@ -23,8 +21,6 @@ namespace Entities
         public decimal VATAmount { get; set; }
 
         public decimal TotalAmount { get; set; }
-
-        public virtual ICollection<SaleProduct> SaleProducts { get; set; }
 
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InfrastructureLayer.Migrations
 {
-    public partial class InitialData : Migration
+    public partial class UpdatedDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -128,14 +128,16 @@ namespace InfrastructureLayer.Migrations
                 name: "SaleProducts",
                 columns: table => new
                 {
-                    SaleId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InvoiceNumber = table.Column<string>(nullable: true),
                     ProductId = table.Column<int>(nullable: false),
-                    InvoiceNumber = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false),
+                    SaleId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SaleProducts", x => new { x.SaleId, x.ProductId });
+                    table.PrimaryKey("PK_SaleProducts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SaleProducts_Products_ProductId",
                         column: x => x.ProductId,
@@ -147,7 +149,7 @@ namespace InfrastructureLayer.Migrations
                         column: x => x.SaleId,
                         principalTable: "Sales",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -199,6 +201,11 @@ namespace InfrastructureLayer.Migrations
                 name: "IX_SaleProducts_ProductId",
                 table: "SaleProducts",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SaleProducts_SaleId",
+                table: "SaleProducts",
+                column: "SaleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sales_UserId",

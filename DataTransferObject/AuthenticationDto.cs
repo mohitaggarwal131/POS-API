@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DataTransferObject
+﻿namespace DataTransferObject
 {
     public class AuthenticationDto
     {

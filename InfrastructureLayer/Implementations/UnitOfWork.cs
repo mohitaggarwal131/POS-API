@@ -1,8 +1,5 @@
 ﻿using InfrastructureLayer.Context.Extensions;
 using InfrastructureLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace InfrastructureLayer.Implementations
 {
@@ -13,6 +10,7 @@ namespace InfrastructureLayer.Implementations
         private ISaleRepository _saleRepository;
         private IUserRepository _userRepository;
         private ICategoryRepository _categoryRepository;
+        private ISaleProductRepository _saleProductRepository;
 
 
         public UnitOfWork(POSContext context)
@@ -50,6 +48,14 @@ namespace InfrastructureLayer.Implementations
             get
             {
                 return _categoryRepository ??= new CategoryRepository(_context);
+            }
+        }
+
+        public ISaleProductRepository SaleProductRepository
+        {
+            get
+            {
+                return _saleProductRepository ??= new SaleProductRepository(_context);
             }
         }
 

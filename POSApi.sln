@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfrastructureLayer", "Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{8EFAC228-D1F9-478E-A231-B939F2A89A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLibrary\BusinessLayer.csproj", "{1D97669F-369A-4FB6-867A-812D86246F99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLibrary\BusinessLayer.csproj", "{1D97669F-369A-4FB6-867A-812D86246F99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransferObject", "DataTransferObject\DataTransferObject.csproj", "{8437E341-5E84-43FA-BF00-51842C5122C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTransferObject", "DataTransferObject\DataTransferObject.csproj", "{8437E341-5E84-43FA-BF00-51842C5122C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{06E27364-F43F-4B23-8967-14DD8C00D2BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{8437E341-5E84-43FA-BF00-51842C5122C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8437E341-5E84-43FA-BF00-51842C5122C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8437E341-5E84-43FA-BF00-51842C5122C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06E27364-F43F-4B23-8967-14DD8C00D2BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06E27364-F43F-4B23-8967-14DD8C00D2BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06E27364-F43F-4B23-8967-14DD8C00D2BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06E27364-F43F-4B23-8967-14DD8C00D2BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,5 @@
 ﻿using DataTransferObject;
 using Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BusinessLayer.Interface
 {
@@ -11,9 +8,9 @@ namespace BusinessLayer.Interface
         /// <summary>
         /// Generate a JWT Token for given user details.
         /// </summary>
-        /// <param name="user">user dto</param>
+        /// <param name="user">user</param>
         /// <param name="secretKey">secret key</param>
-        /// <returns>JWT token</returns>
+        /// <returns>Authentication Dto</returns>
         AuthenticationDto GenerateToken(User user, string secretKey);
     }
 }

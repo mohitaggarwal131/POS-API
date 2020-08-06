@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfrastructureLayer.Migrations
 {
     [DbContext(typeof(POSContext))]
-    [Migration("20200805070358_InitialSeedData")]
-    partial class InitialSeedData
+    [Migration("20200806102210_UpdatedDatabase")]
+    partial class UpdatedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,21 +173,28 @@ namespace InfrastructureLayer.Migrations
 
             modelBuilder.Entity("Entities.SaleProduct", b =>
                 {
-                    b.Property<int>("SaleId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("SaleId", "ProductId");
+                    b.Property<int?>("SaleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("SaleId");
 
                     b.ToTable("SaleProducts");
                 });
@@ -270,7 +277,7 @@ namespace InfrastructureLayer.Migrations
             modelBuilder.Entity("Entities.Product", b =>
                 {
                     b.HasOne("Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -288,16 +295,14 @@ namespace InfrastructureLayer.Migrations
             modelBuilder.Entity("Entities.SaleProduct", b =>
                 {
                     b.HasOne("Entities.Product", "Product")
-                        .WithMany("SaleProducts")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Sale", "Sale")
-                        .WithMany("SaleProducts")
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("SaleId");
                 });
 
             modelBuilder.Entity("Entities.UserRole", b =>
